@@ -54,6 +54,15 @@ class Camper(db.Model, SerializerMixin):
     serialize_rules = ('-signups.camper', )
     
     # Add validation
+    @validates('name')
+    def validate_name(self, key, name):
+        if not name:
+            raise ValueError("name is required")
+        
+    @validates('age')
+    def validate_age(self, key, age):
+        if age not in range(8,19):
+            raise ValueError('age must be between 8 - 18 inclustive')
     
     
     def __repr__(self):
@@ -79,6 +88,10 @@ class Signup(db.Model, SerializerMixin):
     serialize_rules = ('-activity.signups', '-camper.signups')
 
     # Add validation
+    @validates('time')
+    def validate_time(self, key, time):
+        if time not in range(0, 24):
+            raise ValueError("time must be between 0 and 24 inclustive")
     
     def __repr__(self):
         return f'<Signup {self.id}>'
