@@ -51,7 +51,7 @@ class Camper(db.Model, SerializerMixin):
     activites = association_proxy('signups', 'activity')
 
     # Add serialization rules
-    serialize_rules = ('-signups.camper',)
+    serialize_rules = ('-signups.camper', )
     
     # Add validation
     
@@ -66,12 +66,14 @@ class Signup(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.Integer)
 
-    activity_id = db.Column(db.Integer, db.ForeignKey('activity.id'))
-    camper_id = db.Column(db.Integer, db.ForeignKey('camper_id'))
+    # Foreign key to store activty id
+    activity_id = db.Column(db.Integer, db.ForeignKey('activities.id'))
+    # Foreign key to store the camper id
+    camper_id = db.Column(db.Integer, db.ForeignKey('campers.id'))
 
     # Add relationships
     activity = db.relationship('Activity', back_populates ='signups')
-    signups = db.relationship('Camper', back_populates = 'signups')
+    camper = db.relationship('Camper', back_populates = 'signups')
 
     # Add serialization rules
     serialize_rules = ('-activity.signups', '-camper.signups')
