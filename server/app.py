@@ -77,18 +77,18 @@ def camper_by_id(id):
                     db.session.commit()
 
                     response = make_response(
-                        camper.to_dict(rules = '-signups', ),
+                        camper.to_dict(rules = ('-signups', )),
                         202
                     )
             except ValueError:
                 response = make_response(
                     {"errors": ["validation errors"]},
-                    404
+                    400
                 )
         return response
     else:
         response = make_response(
-            { "error": "Camper not found" },
+            {"error": "Camper not found"},
             404
         )
     return response 
@@ -103,7 +103,7 @@ def activities():
 
 
 
-@app.route('/activites/<int:id>', methods = ['DELETE'])
+@app.route('/activities/<int:id>', methods = ['DELETE'])
 def activity_by_id(id):
     activity = Activity.query.filter(Activity.id == id).first()
 
